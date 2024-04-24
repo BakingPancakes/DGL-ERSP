@@ -11,6 +11,7 @@ from dgl.dataloading import (
     DataLoader,
     MultiLayerFullNeighborSampler,
     NeighborSampler,
+    SAINTSampler
 )
 from ogb.nodeproppred import DglNodePropPredDataset
 import torch.cuda as cuda
@@ -108,11 +109,12 @@ def train(args, device, g, dataset, model, num_classes):
     # create sampler & dataloader
     train_idx = dataset.train_idx.to(device)
     val_idx = dataset.val_idx.to(device)
-    sampler = NeighborSampler(
-        [10, 10, 10],  # fanout for [layer-0, layer-1, layer-2]
-        prefetch_node_feats=["feat"],
-        prefetch_labels=["label"],
-    )
+    sampler = SAINTSampler('node', 1000)
+    # sampler = NeighborSampler(
+    #     [10, 10, 10],  # fanout for [layer-0, layer-1, layer-2]
+    #     prefetch_node_feats=["feat"],
+    #     prefetch_labels=["label"],
+    # )
     use_uva = args.mode == "mixed"
     train_dataloader = DataLoader(
         g,
@@ -192,7 +194,7 @@ if __name__ == "__main__":
 
     # load and preprocess dataset
     print("Loading data")
-    dataset = AsNodePredDataset(DglNodePropPredDataset("ogbn-products"))
+    dataset = AsNodePredDataset(DglNodePropPredDataset("ogbn-arxiv"))
     g = dataset[0]
     g = g.to("cuda" if args.mode == "puregpu" else "cpu")
     num_classes = dataset.num_classes
