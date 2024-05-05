@@ -1,3 +1,5 @@
+# model from https://github.com/dmlc/dgl/blob/2.1.x/examples/pytorch/gat/train.py
+
 import argparse
 
 import dgl

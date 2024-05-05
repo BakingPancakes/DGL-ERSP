@@ -1,3 +1,6 @@
+# This is a graphsage model which has been replaced directly by GAT (I'm not sure from where)
+
+
 import argparse
 import dgl
 import dgl.nn as dglnn
