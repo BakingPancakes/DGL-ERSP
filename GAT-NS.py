@@ -24,9 +24,9 @@ class GAT(nn.Module):
         super().__init__()
         self.layers = nn.ModuleList()
         # three-layer GAT-mean
-        self.layers.append(dglnn.GATconv(in_size, hid_size, "mean"))
-        self.layers.append(dglnn.GATconv(hid_size, hid_size, "mean"))
-        self.layers.append(dglnn.GATconv(hid_size, out_size, "mean"))
+        self.layers.append(dglnn.GATConv(in_size, hid_size, "mean"))
+        self.layers.append(dglnn.GATConv(hid_size, hid_size, "mean"))
+        self.layers.append(dglnn.GATConv(hid_size, out_size, "mean"))
         self.dropout = nn.Dropout(0.5)
         self.hid_size = hid_size
         self.out_size = out_size
