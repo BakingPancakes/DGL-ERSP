@@ -11,6 +11,9 @@ import torch.nn.functional as F
 from dgl import AddSelfLoop
 from dgl.data import CiteseerGraphDataset, CoraGraphDataset, PubmedGraphDataset
 
+import csv
+import matplotlib.pyplot as plt
+
 
 class GAT(nn.Module):
     def __init__(self, in_size, hid_size, out_size, heads):
@@ -67,8 +70,11 @@ def train(g, features, labels, masks, model):
     loss_fcn = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=5e-3, weight_decay=5e-4)
 
+    #data to be stored in dict and written to csv
+    data_list = []
+
     # training loop
-    for epoch in range(200):
+    for epoch in range(10):
         model.train()
         logits = model(g, features)
         loss = loss_fcn(logits[train_mask], labels[train_mask])
@@ -81,6 +87,17 @@ def train(g, features, labels, masks, model):
                 epoch, loss.item(), acc
             )
         )
+        data_list.append({"Epoch" : epoch, 'Loss' : loss.item(), 'Accuracy' : acc})
+
+    #create csv file
+    fields = ['Epoch', 'Loss', 'Accuracy']
+    filename = 'GAT-working-data.csv'
+
+    with open(filename, 'w') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fields)
+
+        writer.writeheader()
+        writer.writerows(data_list)
 
 
 if __name__ == "__main__":
