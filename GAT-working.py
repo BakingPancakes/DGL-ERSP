@@ -74,7 +74,7 @@ def train(g, features, labels, masks, model):
     data_list = []
 
     # training loop
-    for epoch in range(10):
+    for epoch in range(50):
         model.train()
         logits = model(g, features)
         loss = loss_fcn(logits[train_mask], labels[train_mask])

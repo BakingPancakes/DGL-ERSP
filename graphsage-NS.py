@@ -214,7 +214,7 @@ if __name__ == "__main__":
 
     # load and preprocess dataset
     print("Loading data")
-    dataset = AsNodePredDataset(DglNodePropPredDataset("ogbn-mag"))
+    dataset = AsNodePredDataset(DglNodePropPredDataset("ogbn-arxiv"))
     g = dataset[0]
     g = g.to("cuda" if args.mode == "puregpu" else "cpu")
     num_classes = dataset.num_classes
